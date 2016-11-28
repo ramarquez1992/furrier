@@ -10,24 +10,65 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    private let audioController: AudioController = AudioController()
+    
+    private let centerX: CGFloat
+    private let centerY: CGFloat
     private let startButton: UIButton
+    private let num1Label: UILabel
+    private let num2Label: UILabel
+    private let num3Label: UILabel
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        startButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        // INIT LOCATIONS
+        centerX = UIScreen.main.bounds.maxX / 2
+        centerY = UIScreen.main.bounds.maxY / 2
         
+        
+        // NUM LABELS
+        num1Label = UILabel(frame: CGRect(x: centerX-50-150, y: centerY-50, width: 100, height: 100))
+        num1Label.textAlignment = .center
+        num1Label.text = "num1"
+        num1Label.isUserInteractionEnabled = true
+        
+        num2Label = UILabel(frame: CGRect(x: centerX-50, y: centerY-50, width: 100, height: 100))
+        num2Label.textAlignment = .center
+        num2Label.text = "num2"
+        num2Label.isUserInteractionEnabled = true
+        
+        num3Label = UILabel(frame: CGRect(x: centerX-50+150, y: centerY-50, width: 100, height: 100))
+        num3Label.textAlignment = .center
+        num3Label.text = "num3"
+        num3Label.isUserInteractionEnabled = true
+
+        
+        // START BUTTON
+        startButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         startButton.setTitle("Start", for: UIControlState())
-        startButton.setTitleColor(UIColor.black, for: UIControlState())
-        startButton.backgroundColor = UIColor.green
+        startButton.setTitleColor(.black, for: UIControlState())
+        startButton.backgroundColor = .green
         startButton.isEnabled = true
         
         
+        // SUPER CALL
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
+        
+        // ADD SUBVIEWS
+        self.view.addSubview(num1Label)
+        self.view.addSubview(num2Label)
+        self.view.addSubview(num3Label)
+        num1Label.addGestureRecognizer(UIPanGestureRecognizer(
+            target: self,
+            action: #selector(ViewController.moveNumLabel(_:))
+        ))
         
         self.view.addSubview(startButton)
         startButton.addTarget(self, action: #selector(ViewController.startButtonPressed), for: UIControlEvents.touchUpInside)
         
-        self.view.backgroundColor = UIColor.cyan
+        
+        // MISC SETUP
+        self.view.backgroundColor = .cyan
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,9 +93,23 @@ class ViewController: UIViewController {
         return UIInterfaceOrientationMask.all
     }
     
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
     func startButtonPressed() {
         print("START BUTTON PRESSED")
+        audioController.playButtonPressedSound()
     }
 
+    func moveNumLabel(_ recognizer: UIPanGestureRecognizer) {
+        let translation: CGPoint = recognizer.translation(in: view)
+        
+        let newX = recognizer.view!.center.x + translation.x
+        let newY = recognizer.view!.center.y + translation.y
+        
+        recognizer.view?.center = CGPoint(x: newX, y: newY)
+        recognizer.setTranslation(CGPoint(x: 0, y: 0), in: view)
+    }
 }
 
