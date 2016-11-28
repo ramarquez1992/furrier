@@ -45,6 +45,7 @@ class BufferManager {
     private var needsNewFFTData: Int32 //volatile
     
     //private var FFTHelper: FFTHelper
+    private let fft: FFTransformer
     
     init(maxFramesPerSlice inMaxFramesPerSlice: Int) {
         //REMOVING THIS BLOCK BREAKS CHART
@@ -67,7 +68,7 @@ class BufferManager {
         needsNewFFTData = 0
     
         FFTInputBuffer = UnsafeMutablePointer.allocate(capacity: Int(inMaxFramesPerSlice))
-        //FFTHelper = FFTHelper(maxFramesPerSlice: inMaxFramesPerSlice)
+        fft = FFTransformer(inMaxFramesPerSlice)
         OSAtomicIncrement32Barrier(&needsNewFFTData)
     }
     
@@ -117,7 +118,7 @@ class BufferManager {
     }
     
     func getFFTOutput(_ outFFTData: UnsafeMutablePointer<Float32>) {
-        //FFTHelper.computeFFT(FFTInputBuffer, outFFTData: outFFTData)
+        fft.compute(FFTInputBuffer, outFFTData: outFFTData)
         FFTInputBufferFrameIndex = 0
         OSAtomicDecrement32Barrier(&hasNewFFTData)
         OSAtomicIncrement32Barrier(&needsNewFFTData)

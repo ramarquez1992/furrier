@@ -168,7 +168,7 @@ class ViewController: UIViewController {
         lineDataSet.addEntry(ChartDataEntry(x: -1.0, y: 0.0)) // ensure set never empty
         
         for i in 0..<size {
-            if data[i] != 0.0 {  // a hard 0 means no data
+            if data[i] != 0.0 || audioController.displayMode == .freqDomain {  // a hard 0 means no data
                 lineDataSet.addEntry(ChartDataEntry(x: Double(i), y: Double(data[i])))
             }
         }
@@ -193,7 +193,6 @@ class ViewController: UIViewController {
     func startButtonPressed() {
         print("START BUTTON PRESSED")
         audioController.playButtonPressedSound()
-        audioController.displayMode = .freqDomain
     }
 
     func moveNumLabel(_ recognizer: UIPanGestureRecognizer) {
