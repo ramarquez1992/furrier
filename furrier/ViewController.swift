@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import Charts
 
 class ViewController: UIViewController {
-    private let REDRAW_INTERVAL: Double = 0.5
+    private let REDRAW_INTERVAL: Double = 0.1
 
     private let audioController: AudioController = AudioController()
     
@@ -21,10 +22,28 @@ class ViewController: UIViewController {
     private let num3Label: UILabel
     private var ctr: Int = 0
     
+    private let lineChart: LineChartView
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         // INIT LOCATIONS
         centerX = UIScreen.main.bounds.maxX / 2
         centerY = UIScreen.main.bounds.maxY / 2
+        
+        
+        // CHART
+        lineChart = LineChartView()
+        lineChart.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.maxX, height: UIScreen.main.bounds.maxY)
+        lineChart.noDataText = ""
+        lineChart.leftAxis.axisMaximum = 1
+        lineChart.leftAxis.axisMinimum = -1
+        lineChart.leftAxis.enabled = false
+        lineChart.rightAxis.enabled = false
+        lineChart.xAxis.enabled = false
+        lineChart.drawBordersEnabled = false
+        lineChart.drawMarkers = false
+        lineChart.drawGridBackgroundEnabled = false
+        lineChart.legend.enabled = false
+        lineChart.chartDescription?.enabled = false
         
         
         // NUM LABELS
@@ -50,13 +69,14 @@ class ViewController: UIViewController {
         startButton.setTitleColor(.black, for: UIControlState())
         startButton.backgroundColor = .green
         startButton.isEnabled = true
-        
-        
+
         // SUPER CALL
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         
         // ADD SUBVIEWS
+        self.view.addSubview(lineChart)
+        
         self.view.addSubview(num1Label)
         self.view.addSubview(num2Label)
         self.view.addSubview(num3Label)
@@ -73,7 +93,14 @@ class ViewController: UIViewController {
         self.view.backgroundColor = .cyan
         
         Timer.scheduledTimer(withTimeInterval: REDRAW_INTERVAL, repeats: true, block: {(timer: Timer) -> Void in
+        //Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: {(timer: Timer) -> Void in
             self.drawView()
+            /*let (drawBuffer, drawBufferSize) = self.audioController.getDrawBuffer()
+
+            for i in 0..<drawBufferSize {
+                print("\(i): \(drawBuffer[i])")
+            }*/
+            
         })
     }
     
@@ -108,11 +135,29 @@ class ViewController: UIViewController {
         self.ctr += 1
         
         let (drawBuffer, drawBufferSize) = audioController.getDrawBuffer()
+        drawChart(data: drawBuffer, size: drawBufferSize)
+        
         self.num2Label.text = "sz:\(drawBufferSize)"
         self.num3Label.text = "0th:\(drawBuffer[0])"
+    }
+
+    func drawChart(data: UnsafeMutablePointer<Float32>, size: Int) {
+        let lineDataSet = LineChartDataSet()
+        lineDataSet.setColor(NSUIColor.black)
+        lineDataSet.lineWidth = 1
+        lineDataSet.drawCirclesEnabled = false
         
+        for i in 0..<size {
+            if data[i] != 0.0 {  // a hard 0 means no data
+                lineDataSet.addEntry(ChartDataEntry(x: Double(i), y: Double(data[i])))
+            }
+        }
         
+        let lineData = LineChartData()
+        lineData.addDataSet(lineDataSet)
+        lineChart.data = lineData
         
+        lineChart.notifyDataSetChanged()
     }
     
     func startButtonPressed() {

@@ -16,8 +16,54 @@
 		E90018F31DEBC9E50056DD7C /* CAStreamBasicDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */; };
 		E90018F51DEBD3750056DD7C /* button_press.caf in Resources */ = {isa = PBXBuildFile; fileRef = E90018F41DEBD3750056DD7C /* button_press.caf */; };
 		E90018F91DEBF15B0056DD7C /* DCRejectionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */; };
-		E90018FB1DEBF4540056DD7C /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90018FA1DEBF4540056DD7C /* Buffer.swift */; };
+		E90019081DEBFA4C0056DD7C /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E90019031DEBF9B80056DD7C /* Charts.framework */; };
+		E90019091DEBFA4C0056DD7C /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E90019031DEBF9B80056DD7C /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E90019021DEBF9B80056DD7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06165F241D8110E600722320;
+			remoteInfo = Charts;
+		};
+		E90019041DEBF9B80056DD7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06B120D51D811E6200D14B02;
+			remoteInfo = ChartsRealm;
+		};
+		E90019061DEBF9B80056DD7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06165F2E1D8110E600722320;
+			remoteInfo = ChartsTests;
+		};
+		E900190A1DEBFA4C0056DD7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 06165F231D8110E600722320;
+			remoteInfo = Charts;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E900190C1DEBFA4C0056DD7C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E90019091DEBFA4C0056DD7C /* Charts.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E90018D91DEBB8390056DD7C /* furrier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = furrier.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,7 +77,7 @@
 		E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAStreamBasicDescription.swift; sourceTree = "<group>"; };
 		E90018F41DEBD3750056DD7C /* button_press.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = button_press.caf; sourceTree = "<group>"; };
 		E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRejectionFilter.swift; sourceTree = "<group>"; };
-		E90018FA1DEBF4540056DD7C /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
+		E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = Charts/Charts.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E90019081DEBFA4C0056DD7C /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,11 +115,11 @@
 				E90018DE1DEBB8390056DD7C /* ViewController.swift */,
 				E90018EE1DEBC23B0056DD7C /* AudioController.swift */,
 				E90018F01DEBC7A50056DD7C /* BufferManager.swift */,
-				E90018FA1DEBF4540056DD7C /* Buffer.swift */,
 				E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */,
 				E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */,
 				E90018E31DEBB8390056DD7C /* Assets.xcassets */,
 				E90018E51DEBB8390056DD7C /* LaunchScreen.storyboard */,
+				E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */,
 				E90018E81DEBB8390056DD7C /* Info.plist */,
 				E90018F61DEBD3D90056DD7C /* Resources */,
 			);
@@ -95,6 +142,16 @@
 			name = audio;
 			sourceTree = "<group>";
 		};
+		E90018FD1DEBF9B70056DD7C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E90019031DEBF9B80056DD7C /* Charts.framework */,
+				E90019051DEBF9B80056DD7C /* ChartsRealm.framework */,
+				E90019071DEBF9B80056DD7C /* ChartsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -105,10 +162,12 @@
 				E90018D51DEBB8390056DD7C /* Sources */,
 				E90018D61DEBB8390056DD7C /* Frameworks */,
 				E90018D71DEBB8390056DD7C /* Resources */,
+				E900190C1DEBFA4C0056DD7C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E900190B1DEBFA4C0056DD7C /* PBXTargetDependency */,
 			);
 			name = furrier;
 			productName = furrier;
@@ -143,12 +202,42 @@
 			mainGroup = E90018D01DEBB8390056DD7C;
 			productRefGroup = E90018DA1DEBB8390056DD7C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E90018FD1DEBF9B70056DD7C /* Products */;
+					ProjectRef = E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E90018D81DEBB8390056DD7C /* furrier */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E90019031DEBF9B80056DD7C /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = E90019021DEBF9B80056DD7C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E90019051DEBF9B80056DD7C /* ChartsRealm.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ChartsRealm.framework;
+			remoteRef = E90019041DEBF9B80056DD7C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E90019071DEBF9B80056DD7C /* ChartsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsTests.xctest;
+			remoteRef = E90019061DEBF9B80056DD7C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E90018D71DEBB8390056DD7C /* Resources */ = {
@@ -170,7 +259,6 @@
 			files = (
 				E90018F91DEBF15B0056DD7C /* DCRejectionFilter.swift in Sources */,
 				E90018DF1DEBB8390056DD7C /* ViewController.swift in Sources */,
-				E90018FB1DEBF4540056DD7C /* Buffer.swift in Sources */,
 				E90018EF1DEBC23B0056DD7C /* AudioController.swift in Sources */,
 				E90018F31DEBC9E50056DD7C /* CAStreamBasicDescription.swift in Sources */,
 				E90018DD1DEBB8390056DD7C /* AppDelegate.swift in Sources */,
@@ -179,6 +267,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E900190B1DEBFA4C0056DD7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Charts;
+			targetProxy = E900190A1DEBFA4C0056DD7C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E90018E51DEBB8390056DD7C /* LaunchScreen.storyboard */ = {
@@ -286,6 +382,7 @@
 		E90018EC1DEBB8390056DD7C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = M24JSJPDSH;
 				INFOPLIST_FILE = furrier/Info.plist;
@@ -299,6 +396,7 @@
 		E90018ED1DEBB8390056DD7C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = M24JSJPDSH;
 				INFOPLIST_FILE = furrier/Info.plist;
