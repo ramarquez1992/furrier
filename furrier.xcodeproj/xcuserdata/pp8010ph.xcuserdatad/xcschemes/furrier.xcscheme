@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E90018AB1DEB97220056DD7C"
+               BlueprintIdentifier = "E90018D81DEBB8390056DD7C"
                BuildableName = "furrier.app"
                BlueprintName = "furrier"
                ReferencedContainer = "container:furrier.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E90018AB1DEB97220056DD7C"
+            BlueprintIdentifier = "E90018D81DEBB8390056DD7C"
             BuildableName = "furrier.app"
             BlueprintName = "furrier"
             ReferencedContainer = "container:furrier.xcodeproj">
@@ -55,7 +55,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E90018AB1DEB97220056DD7C"
+            BlueprintIdentifier = "E90018D81DEBB8390056DD7C"
             BuildableName = "furrier.app"
             BlueprintName = "furrier"
             ReferencedContainer = "container:furrier.xcodeproj">
@@ -74,7 +74,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E90018AB1DEB97220056DD7C"
+            BlueprintIdentifier = "E90018D81DEBB8390056DD7C"
             BuildableName = "furrier.app"
             BlueprintName = "furrier"
             ReferencedContainer = "container:furrier.xcodeproj">
