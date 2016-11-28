@@ -15,6 +15,8 @@
 		E90018F11DEBC7A50056DD7C /* BufferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90018F01DEBC7A50056DD7C /* BufferManager.swift */; };
 		E90018F31DEBC9E50056DD7C /* CAStreamBasicDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */; };
 		E90018F51DEBD3750056DD7C /* button_press.caf in Resources */ = {isa = PBXBuildFile; fileRef = E90018F41DEBD3750056DD7C /* button_press.caf */; };
+		E90018F91DEBF15B0056DD7C /* DCRejectionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */; };
+		E90018FB1DEBF4540056DD7C /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90018FA1DEBF4540056DD7C /* Buffer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		E90018F01DEBC7A50056DD7C /* BufferManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferManager.swift; sourceTree = "<group>"; };
 		E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAStreamBasicDescription.swift; sourceTree = "<group>"; };
 		E90018F41DEBD3750056DD7C /* button_press.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = button_press.caf; sourceTree = "<group>"; };
+		E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRejectionFilter.swift; sourceTree = "<group>"; };
+		E90018FA1DEBF4540056DD7C /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,8 @@
 				E90018DE1DEBB8390056DD7C /* ViewController.swift */,
 				E90018EE1DEBC23B0056DD7C /* AudioController.swift */,
 				E90018F01DEBC7A50056DD7C /* BufferManager.swift */,
+				E90018FA1DEBF4540056DD7C /* Buffer.swift */,
+				E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */,
 				E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */,
 				E90018E31DEBB8390056DD7C /* Assets.xcassets */,
 				E90018E51DEBB8390056DD7C /* LaunchScreen.storyboard */,
@@ -162,7 +168,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E90018F91DEBF15B0056DD7C /* DCRejectionFilter.swift in Sources */,
 				E90018DF1DEBB8390056DD7C /* ViewController.swift in Sources */,
+				E90018FB1DEBF4540056DD7C /* Buffer.swift in Sources */,
 				E90018EF1DEBC23B0056DD7C /* AudioController.swift in Sources */,
 				E90018F31DEBC9E50056DD7C /* CAStreamBasicDescription.swift in Sources */,
 				E90018DD1DEBB8390056DD7C /* AppDelegate.swift in Sources */,

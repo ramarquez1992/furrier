@@ -9,6 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    private let REDRAW_INTERVAL: Double = 0.5
 
     private let audioController: AudioController = AudioController()
     
@@ -18,6 +19,7 @@ class ViewController: UIViewController {
     private let num1Label: UILabel
     private let num2Label: UILabel
     private let num3Label: UILabel
+    private var ctr: Int = 0
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         // INIT LOCATIONS
@@ -69,6 +71,10 @@ class ViewController: UIViewController {
         
         // MISC SETUP
         self.view.backgroundColor = .cyan
+        
+        Timer.scheduledTimer(withTimeInterval: REDRAW_INTERVAL, repeats: true, block: {(timer: Timer) -> Void in
+            self.drawView()
+        })
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -96,6 +102,18 @@ class ViewController: UIViewController {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    
+    func drawView() {
+        self.num1Label.text = "ctr:\(self.ctr)"
+        self.ctr += 1
+        
+        let (drawBuffer, drawBufferSize) = audioController.getDrawBuffer()
+        self.num2Label.text = "sz:\(drawBufferSize)"
+        self.num3Label.text = "0th:\(drawBuffer[0])"
+        
+        
+        
+    }
     
     func startButtonPressed() {
         print("START BUTTON PRESSED")

@@ -3,7 +3,9 @@
 //  furrier
 //
 //  Created by Marquez, Richard A on 11/27/16.
-//  Copyright © 2016 WSU. All rights reserved.
+//  
+//  Uses aruiTouch by Apple Inc.
+//  Swift translation by OOPer in cooperation with shlab.jp, on 2015/1/31.
 //
 
 import AVFoundation
@@ -11,9 +13,10 @@ import AudioToolbox
 
 class AudioController: AURenderCallbackDelegate {
 
+    var muted: Bool = true
     var rioUnit: AudioUnit? = nil
 
-    //var dcRejectionFilter: DCRejectionFilter!
+    var dcRejectionFilter: DCRejectionFilter!
     var bufferManager: BufferManager!
     var audioPlayer: AVAudioPlayer?
     
@@ -21,6 +24,7 @@ class AudioController: AURenderCallbackDelegate {
     
     init() {
         self.setupAudioChain()
+        AudioOutputUnitStart(rioUnit!)
     }
     
     func setupAudioChain() {
@@ -86,7 +90,7 @@ class AudioController: AURenderCallbackDelegate {
         
         
         self.bufferManager = BufferManager(maxFramesPerSlice: Int(maxFramesPerSlice))
-        //self.dcRejectionFilter = DCRejectionFilter()
+        self.dcRejectionFilter = DCRejectionFilter()
         
         
         // Set the render callback on AURemoteIO
@@ -109,7 +113,7 @@ class AudioController: AURenderCallbackDelegate {
         usleep(25000) // Wait to ensure these objects are not deleted while being accessed elsewhere
         
         // Rebuild the audio chain
-        //dcRejectionFilter = nil
+        dcRejectionFilter = nil
         bufferManager = nil
         audioPlayer = nil
         
@@ -121,9 +125,40 @@ class AudioController: AURenderCallbackDelegate {
     
     ////////////////////////////////////////////////////////////////////////////
     
-    internal func performRender(_ ioActionFlags: UnsafeMutablePointer<AudioUnitRenderActionFlags>, inTimeStamp: UnsafePointer<AudioTimeStamp>, inBufNumber: UInt32, inNumberFrames: UInt32, ioData: UnsafeMutablePointer<AudioBufferList>) -> OSStatus {
-        //TODO: implement
-        return OSStatus()
+    func performRender(_ ioActionFlags: UnsafeMutablePointer<AudioUnitRenderActionFlags>, inTimeStamp: UnsafePointer<AudioTimeStamp>, inBufNumber: UInt32, inNumberFrames: UInt32, ioData: UnsafeMutablePointer<AudioBufferList>) -> OSStatus {
+        
+        let ioPtr = UnsafeMutableAudioBufferListPointer(ioData)
+        var err: OSStatus = noErr
+        
+        if audioChainIsBeingReconstructed { return err }
+        
+        // we are calling AudioUnitRender on the input bus of AURemoteIO
+        // this will store the audio data captured by the microphone in ioData
+        err = AudioUnitRender(rioUnit!, ioActionFlags, inTimeStamp, 1, inNumberFrames, ioData)
+        
+        // filter out the DC component of the signal
+        dcRejectionFilter?.processInplace(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: inNumberFrames)
+        
+        // based on the current display mode, copy the required data to the buffer manager
+        // OScope waveform
+        bufferManager.copyAudioDataToDrawBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
+        
+        // Spectrum or FFT
+        /*if bufferManager.needsNewFFTData {
+            bufferManager.copyAudioDataToFFTInputBuffer(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: Int(inNumberFrames))
+        }*/
+        
+        
+        // ioData is both input AND output param
+        // mute audio if set
+        if muted {
+            for i in 0..<ioPtr.count {
+                memset(ioPtr[i].mData, 0, Int(ioPtr[i].mDataByteSize))
+            }
+        }
+        
+        return err;
+
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -143,6 +178,9 @@ class AudioController: AURenderCallbackDelegate {
         
     }
     
+    func getDrawBuffer() -> (UnsafeMutablePointer<Float32>, Int) {
+        return (data: bufferManager.drawBuffer, size: bufferManager.maxFrames)
+    }
 }
 
 
