@@ -16,6 +16,10 @@ class ViewController: UIViewController {
     
     private let centerX: CGFloat
     private let centerY: CGFloat
+    
+    private let modeSwitch: UISwitch
+    private let modeLabel: UILabel
+    
     private let startButton: UIButton
     private let num1Label: UILabel
     private let num2Label: UILabel
@@ -70,12 +74,24 @@ class ViewController: UIViewController {
         startButton.backgroundColor = .green
         startButton.isEnabled = true
 
+        modeSwitch = UISwitch(frame: CGRect(x: 200, y: 0, width: 40, height: 40))
+        modeSwitch.setOn(false, animated: false)
+        
+        modeLabel = UILabel(frame: CGRect(x: centerX-50+150, y: 0, width: 100, height: 100))
+        modeLabel.textAlignment = .left
+        modeLabel.text = "time"
+        
         // SUPER CALL
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         
         // ADD SUBVIEWS
+        modeSwitch.addTarget(self, action: #selector(ViewController.modeStateChanged(_:)), for: UIControlEvents.valueChanged)
+
         self.view.addSubview(lineChart)
+        
+        self.view.addSubview(modeLabel)
+        self.view.addSubview(modeSwitch)
         
         self.view.addSubview(num1Label)
         self.view.addSubview(num2Label)
@@ -135,10 +151,12 @@ class ViewController: UIViewController {
         self.ctr += 1
         
         let (drawBuffer, drawBufferSize) = audioController.getDrawBuffer()
-        drawChart(data: drawBuffer, size: drawBufferSize)
+        if drawBufferSize > 0 {
+            drawChart(data: drawBuffer!, size: drawBufferSize)
+        }
         
         self.num2Label.text = "sz:\(drawBufferSize)"
-        self.num3Label.text = "0th:\(drawBuffer[0])"
+        //self.num3Label.text = "0th:\(drawBuffer[0])"
     }
 
     func drawChart(data: UnsafeMutablePointer<Float32>, size: Int) {
@@ -146,6 +164,8 @@ class ViewController: UIViewController {
         lineDataSet.setColor(NSUIColor.black)
         lineDataSet.lineWidth = 1
         lineDataSet.drawCirclesEnabled = false
+        
+        lineDataSet.addEntry(ChartDataEntry(x: -1.0, y: 0.0)) // ensure set never empty
         
         for i in 0..<size {
             if data[i] != 0.0 {  // a hard 0 means no data
@@ -160,9 +180,20 @@ class ViewController: UIViewController {
         lineChart.notifyDataSetChanged()
     }
     
+    func modeStateChanged(_ switchState: UISwitch) {
+        if switchState.isOn {
+            audioController.displayMode = .freqDomain
+            modeLabel.text = "freq"
+        } else {
+            audioController.displayMode = .timeDomain
+            modeLabel.text = "time"
+        }
+    }
+    
     func startButtonPressed() {
         print("START BUTTON PRESSED")
         audioController.playButtonPressedSound()
+        audioController.displayMode = .freqDomain
     }
 
     func moveNumLabel(_ recognizer: UIPanGestureRecognizer) {

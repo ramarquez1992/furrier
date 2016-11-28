@@ -13,6 +13,13 @@ import AudioToolbox
 
 class AudioController: AURenderCallbackDelegate {
 
+    enum displayModeType {
+        case timeDomain
+        case freqDomain
+    }
+    
+    var displayMode = displayModeType.timeDomain
+    
     var muted: Bool = true
     var rioUnit: AudioUnit? = nil
 
@@ -21,6 +28,9 @@ class AudioController: AURenderCallbackDelegate {
     var audioPlayer: AVAudioPlayer?
     
     var audioChainIsBeingReconstructed: Bool = false
+    
+    private var FFTData: UnsafeMutablePointer<Float32>!
+
     
     init() {
         self.setupAudioChain()
@@ -89,9 +99,12 @@ class AudioController: AURenderCallbackDelegate {
         AudioUnitGetProperty(self.rioUnit!, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, &propSize)
         
         
-        self.bufferManager = BufferManager(maxFramesPerSlice: Int(maxFramesPerSlice))
+        // INIT INSTANCE VARS
         self.dcRejectionFilter = DCRejectionFilter()
-        
+        self.bufferManager = BufferManager(maxFramesPerSlice: Int(maxFramesPerSlice))
+        self.FFTData = UnsafeMutablePointer.allocate(capacity: bufferManager.FFTOutputBufferLength)
+        bzero(self.FFTData, size_t(bufferManager.FFTOutputBufferLength * MemoryLayout<Float32>.size))
+
         
         // Set the render callback on AURemoteIO
         var renderCallback = AURenderCallbackStruct(
@@ -144,9 +157,9 @@ class AudioController: AURenderCallbackDelegate {
         bufferManager.copyAudioDataToDrawBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
         
         // Spectrum or FFT
-        /*if bufferManager.needsNewFFTData {
+        if bufferManager.doesNeedNewFFTData {
             bufferManager.copyAudioDataToFFTInputBuffer(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: Int(inNumberFrames))
-        }*/
+        }
         
         
         // ioData is both input AND output param
@@ -178,8 +191,20 @@ class AudioController: AURenderCallbackDelegate {
         
     }
     
-    func getDrawBuffer() -> (UnsafeMutablePointer<Float32>, Int) {
-        return (data: bufferManager.drawBuffer, size: bufferManager.maxFrames)
+    func getDrawBuffer() -> (UnsafeMutablePointer<Float32>?, Int) {
+        switch displayMode {
+        case .timeDomain:
+            return (data: bufferManager.drawBuffer, size: bufferManager.maxFrames)
+            
+        case .freqDomain:
+            if bufferManager.doesHaveNewFFTData {
+                bufferManager.getFFTOutput(FFTData)
+                return (data: FFTData, size: bufferManager.FFTOutputBufferLength)
+            } else {
+                return (data: nil, size: -1)
+            }
+        }
+        
     }
 }
 
