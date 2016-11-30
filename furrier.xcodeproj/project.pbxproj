@@ -19,6 +19,7 @@
 		E90019081DEBFA4C0056DD7C /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E90019031DEBF9B80056DD7C /* Charts.framework */; };
 		E90019091DEBFA4C0056DD7C /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E90019031DEBF9B80056DD7C /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E900190E1DEC1D830056DD7C /* FFTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E900190D1DEC1D830056DD7C /* FFTransformer.swift */; };
+		E96D7B401DEE6583009218E4 /* VisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96D7B3F1DEE6583009218E4 /* VisualizerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRejectionFilter.swift; sourceTree = "<group>"; };
 		E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = Charts/Charts.xcodeproj; sourceTree = "<group>"; };
 		E900190D1DEC1D830056DD7C /* FFTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FFTransformer.swift; sourceTree = "<group>"; };
+		E96D7B3F1DEE6583009218E4 /* VisualizerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				E90018DE1DEBB8390056DD7C /* ViewController.swift */,
 				E90018EE1DEBC23B0056DD7C /* AudioController.swift */,
 				E90018F01DEBC7A50056DD7C /* BufferManager.swift */,
+				E96D7B3F1DEE6583009218E4 /* VisualizerView.swift */,
 				E900190D1DEC1D830056DD7C /* FFTransformer.swift */,
 				E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */,
 				E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */,
@@ -260,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E96D7B401DEE6583009218E4 /* VisualizerView.swift in Sources */,
 				E90018F91DEBF15B0056DD7C /* DCRejectionFilter.swift in Sources */,
 				E90018DF1DEBB8390056DD7C /* ViewController.swift in Sources */,
 				E90018EF1DEBC23B0056DD7C /* AudioController.swift in Sources */,

@@ -20,19 +20,20 @@ class ViewController: UIViewController {
     private let modeSwitch: UISwitch
     private let modeLabel: UILabel
     
-    private let startButton: UIButton
-    private let num1Label: UILabel
-    private let num2Label: UILabel
-    private let num3Label: UILabel
-    private var ctr: Int = 0
-    
+    private let testButton: UIButton
+
     private let lineChart: LineChartView
+    private let visualizer: VisualizerView
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         // INIT LOCATIONS
         centerX = UIScreen.main.bounds.maxX / 2
         centerY = UIScreen.main.bounds.maxY / 2
         
+        visualizer = VisualizerView()
+        visualizer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        visualizer.layer.zPosition = 100
+        visualizer.isHidden = true
         
         // CHART
         lineChart = LineChartView()
@@ -48,75 +49,50 @@ class ViewController: UIViewController {
         lineChart.drawGridBackgroundEnabled = false
         lineChart.legend.enabled = false
         lineChart.chartDescription?.enabled = false
-        
-        
-        // NUM LABELS
-        num1Label = UILabel(frame: CGRect(x: centerX-50-150, y: centerY-50, width: 100, height: 100))
-        num1Label.textAlignment = .center
-        num1Label.text = "num1"
-        num1Label.isUserInteractionEnabled = true
-        
-        num2Label = UILabel(frame: CGRect(x: centerX-50, y: centerY-50, width: 100, height: 100))
-        num2Label.textAlignment = .center
-        num2Label.text = "num2"
-        num2Label.isUserInteractionEnabled = true
-        
-        num3Label = UILabel(frame: CGRect(x: centerX-50+150, y: centerY-50, width: 100, height: 100))
-        num3Label.textAlignment = .center
-        num3Label.text = "num3"
-        num3Label.isUserInteractionEnabled = true
 
-        
-        // START BUTTON
-        startButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        startButton.setTitle("Start", for: UIControlState())
-        startButton.setTitleColor(.black, for: UIControlState())
-        startButton.backgroundColor = .green
-        startButton.isEnabled = true
 
-        modeSwitch = UISwitch(frame: CGRect(x: 200, y: 0, width: 40, height: 40))
+        var modeSwitchOffset = CGFloat(10)
+        modeSwitch = UISwitch()
+        modeSwitch.frame = CGRect(x: UIScreen.main.bounds.width-modeSwitch.frame.width-modeSwitchOffset, y: modeSwitchOffset, width: modeSwitch.frame.width, height: modeSwitch.frame.height)
         modeSwitch.setOn(false, animated: false)
         
-        modeLabel = UILabel(frame: CGRect(x: centerX-50+150, y: 0, width: 100, height: 100))
+        modeLabel = UILabel()
+        modeLabel.frame = CGRect(x: UIScreen.main.bounds.width-modeSwitch.frame.width, y: modeSwitch.frame.height+modeSwitchOffset, width: modeSwitch.frame.width, height: modeSwitch.frame.height)
         modeLabel.textAlignment = .left
-        modeLabel.text = "time"
+        modeLabel.text = "TIME"
+        modeLabel.textColor = UIColor.white
+        
+        
+        // TEST BUTTON
+        testButton = UIButton(type: .roundedRect)
+        testButton.frame = CGRect(x: modeSwitchOffset, y: modeSwitchOffset, width: 60, height: 40)
+        testButton.setTitle("TEST", for: UIControlState())
+        testButton.setTitleColor(.black, for: UIControlState())
+        testButton.backgroundColor = .green
+        testButton.layer.cornerRadius = 5
+        testButton.isEnabled = true
         
         // SUPER CALL
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
-        
         // ADD SUBVIEWS
         modeSwitch.addTarget(self, action: #selector(ViewController.modeStateChanged(_:)), for: UIControlEvents.valueChanged)
 
+        self.view.addSubview(visualizer)
         self.view.addSubview(lineChart)
         
         self.view.addSubview(modeLabel)
         self.view.addSubview(modeSwitch)
         
-        self.view.addSubview(num1Label)
-        self.view.addSubview(num2Label)
-        self.view.addSubview(num3Label)
-        num1Label.addGestureRecognizer(UIPanGestureRecognizer(
-            target: self,
-            action: #selector(ViewController.moveNumLabel(_:))
-        ))
-        
-        self.view.addSubview(startButton)
-        startButton.addTarget(self, action: #selector(ViewController.startButtonPressed), for: UIControlEvents.touchUpInside)
+        self.view.addSubview(testButton)
+        testButton.addTarget(self, action: #selector(ViewController.startButtonPressed), for: UIControlEvents.touchUpInside)
         
         
         // MISC SETUP
-        self.view.backgroundColor = .cyan
+        self.view.backgroundColor = .purple
         
         Timer.scheduledTimer(withTimeInterval: REDRAW_INTERVAL, repeats: true, block: {(timer: Timer) -> Void in
-        //Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: {(timer: Timer) -> Void in
             self.drawView()
-            /*let (drawBuffer, drawBufferSize) = self.audioController.getDrawBuffer()
-
-            for i in 0..<drawBufferSize {
-                print("\(i): \(drawBuffer[i])")
-            }*/
-            
         })
     }
     
@@ -147,21 +123,16 @@ class ViewController: UIViewController {
     
     
     func drawView() {
-        self.num1Label.text = "ctr:\(self.ctr)"
-        self.ctr += 1
-        
         let (drawBuffer, drawBufferSize) = audioController.getDrawBuffer()
         if drawBufferSize > 0 {
             drawChart(data: drawBuffer!, size: drawBufferSize)
         }
         
-        self.num2Label.text = "sz:\(drawBufferSize)"
-        //self.num3Label.text = "0th:\(drawBuffer[0])"
     }
 
     func drawChart(data: UnsafeMutablePointer<Float32>, size: Int) {
         let lineDataSet = LineChartDataSet()
-        lineDataSet.setColor(NSUIColor.black)
+        lineDataSet.setColor(NSUIColor.green)
         lineDataSet.lineWidth = 1
         lineDataSet.drawCirclesEnabled = false
         
@@ -183,10 +154,10 @@ class ViewController: UIViewController {
     func modeStateChanged(_ switchState: UISwitch) {
         if switchState.isOn {
             audioController.displayMode = .freqDomain
-            modeLabel.text = "freq"
+            modeLabel.text = "FREQ"
         } else {
             audioController.displayMode = .timeDomain
-            modeLabel.text = "time"
+            modeLabel.text = "TIME"
         }
     }
     
