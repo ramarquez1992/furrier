@@ -12,6 +12,7 @@ import AVFoundation
 import AudioToolbox
 
 class AudioController: AURenderCallbackDelegate {
+    let SAMPLE_RATE: Int = 44100
 
     enum displayModeType {
         case timeDomain
@@ -87,7 +88,7 @@ class AudioController: AURenderCallbackDelegate {
         
         // Explicitly set the input and output client formats
         // sample rate = 44100, num channels = 1, format = 32 bit floating point
-        var ioFormat = CAStreamBasicDescription(sampleRate: 44100, numChannels: 1, pcmf: .float32, isInterleaved: false)
+        var ioFormat = CAStreamBasicDescription(sampleRate: Double(SAMPLE_RATE), numChannels: 1, pcmf: .float32, isInterleaved: false)
         AudioUnitSetProperty(self.rioUnit!, AudioUnitPropertyID(kAudioUnitProperty_StreamFormat), AudioUnitScope(kAudioUnitScope_Output), 1, &ioFormat, SizeOf32(ioFormat))
         AudioUnitSetProperty(self.rioUnit!, AudioUnitPropertyID(kAudioUnitProperty_StreamFormat), AudioUnitScope(kAudioUnitScope_Input), 0, &ioFormat, SizeOf32(ioFormat))
         
@@ -113,7 +114,6 @@ class AudioController: AURenderCallbackDelegate {
             inputProc: AudioController_RenderCallback,
             inputProcRefCon: Unmanaged.passUnretained(self).toOpaque()
         )
-        //AudioUnitSetProperty(self.rioUnit!, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &renderCallback, MemoryLayout<AURenderCallbackStruct>.size.ui)
         AudioUnitSetProperty(self.rioUnit!, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &renderCallback, UInt32(MemoryLayout<AURenderCallbackStruct>.size))
         
         // Initialize the AURemoteIO instance
@@ -141,61 +141,81 @@ class AudioController: AURenderCallbackDelegate {
     ////////////////////////////////////////////////////////////////////////////
     
     func performRender(_ ioActionFlags: UnsafeMutablePointer<AudioUnitRenderActionFlags>, inTimeStamp: UnsafePointer<AudioTimeStamp>, inBufNumber: UInt32, inNumberFrames: UInt32, ioData: UnsafeMutablePointer<AudioBufferList>) -> OSStatus {
+        //print(inNumberFrames)
         
         let ioPtr = UnsafeMutableAudioBufferListPointer(ioData)
         var err: OSStatus = noErr
         
         if audioChainIsBeingReconstructed { return err }
         
-        // we are calling AudioUnitRender on the input bus of AURemoteIO
-        // this will store the audio data captured by the microphone in ioData
+        // Calling AudioUnitRender on the input bus of AURemoteIO
+        // Stores the audio data captured by the microphone in ioData
         err = AudioUnitRender(rioUnit!, ioActionFlags, inTimeStamp, 1, inNumberFrames, ioData)
         
         // filter out the DC component of the signal
         dcRejectionFilter?.processInplace(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: inNumberFrames)
         
         if displayMode == .timeDomain {
-            // time domain waveform
             bufferManager.copyAudioDataToDrawBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
         } else {
-            // freq domain waveform
             if bufferManager.doesNeedNewFFTData {
                 bufferManager.copyAudioDataToFFTInputBuffer(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: Int(inNumberFrames))
             }
         }
         
-        // ioData is both input AND output param
-        // mute audio if set
+        
         if muted {
             for i in 0..<ioPtr.count {
                 memset(ioPtr[i].mData, 0, Int(ioPtr[i].mDataByteSize))
+                //muteInPlace(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: Int(inNumberFrames))
             }
         } else {
             
+            // audioOut is both input AND output param
             let audioOut: UnsafeMutablePointer<Float32> = ioPtr[0].mData!.assumingMemoryBound(to: Float32.self)
             let numFrames = Int(inNumberFrames)
             
-            var neg: Float = 1.0
-            var ctr = 0
-            let maxCtr = Int((outputWave.frequency*100)/2) //TODO: directly represent freq
-            //print("freq: \(outputWave.frequency) maxCtr: \(maxCtr)")
+            createSinInplace(audioOut, numFrames: numFrames)
             
-            for i in 0..<numFrames {
-                let newOutVal = (outputWave.amplitude*0.3  *   neg   )
-                //print("orig: \(audioOut[i]) new: \(newOutVal)")
-                audioOut[i] = newOutVal
-                
-                ctr += 1
-                if ctr >= maxCtr {
-                    ctr = 0
-                    neg *= -1
-                }
-            }
-
         }
         
         return err;
     }
+
+    func createSinInplace(_ ioData: UnsafeMutablePointer<Float32>, numFrames: Int) {
+        for i in 0..<numFrames {
+            let userFactor = Float32(outputWave.amplitude*0.5)
+            let newOutVal = sin(Float32(i) * (1-outputWave.frequency) * 0.4)
+
+            ioData[i] = Float32( newOutVal * userFactor)
+        }
+    }
+    
+    func createSqInplace(_ ioData: UnsafeMutablePointer<Float32>, numFrames: Int) {
+        var neg: Float = 1.0
+        var ctr = 0
+        let maxCtr = Int((outputWave.frequency*100)/2) //TODO: directly represent freq
+        //print("freq: \(outputWave.frequency) maxCtr: \(maxCtr)")
+        
+        for i in 0..<numFrames {
+            //print("orig: \(ioData[i]) new: \(newOutVal)")
+            ioData[i] = (outputWave.amplitude*0.3 * neg)
+            
+            ctr += 1
+            if ctr >= maxCtr {
+                ctr = 0
+                neg *= -1
+            }
+        }
+
+    }
+    
+    func muteInPlace(_ ioData: UnsafeMutablePointer<Float32>, numFrames: Int) {
+        for i in 0..<numFrames {
+            ioData[i] = 0
+        }
+    }
+    
     
     ////////////////////////////////////////////////////////////////////////////
 
