@@ -152,17 +152,17 @@ class AudioController: AURenderCallbackDelegate {
         err = AudioUnitRender(rioUnit!, ioActionFlags, inTimeStamp, 1, inNumberFrames, ioData)
         
         // filter out the DC component of the signal
-        dcRejectionFilter?.processInplace(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: inNumberFrames)
+        //dcRejectionFilter?.processInplace(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: inNumberFrames)
         
-        // based on the current display mode, copy the required data to the buffer manager
-        // OScope waveform
-        bufferManager.copyAudioDataToDrawBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
-        
-        // Spectrum or FFT
-        if bufferManager.doesNeedNewFFTData {
-            bufferManager.copyAudioDataToFFTInputBuffer(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: Int(inNumberFrames))
+        if displayMode == .timeDomain {
+            // time domain waveform
+            bufferManager.copyAudioDataToDrawBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
+        } else {
+            // freq domain waveform
+            if bufferManager.doesNeedNewFFTData {
+                bufferManager.copyAudioDataToFFTInputBuffer(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: Int(inNumberFrames))
+            }
         }
-        
         
         // ioData is both input AND output param
         // mute audio if set
@@ -177,7 +177,7 @@ class AudioController: AURenderCallbackDelegate {
             
             var neg: Float = 1.0
             var ctr = 0
-            let maxCtr = 20 // represents freq somehow...
+            let maxCtr = 15 // represents freq somehow...
             for i in 0..<numFrames {
                 let newOutVal = (outputWave.amplitude*0.3  *   neg   )
                 //print("orig: \(audioOut[i]) new: \(newOutVal)")

@@ -10,6 +10,7 @@ import UIKit
 import Charts
 
 class ViewController: UIViewController {
+    private let MAX_CHART_SIZE: Int = 512  // for speed
     private let REDRAW_INTERVAL: Double = 0.1
 
     private let audioController: AudioController = AudioController()
@@ -156,14 +157,21 @@ class ViewController: UIViewController {
         lineDataSet.addEntry(ChartDataEntry(x: -1.0, y: 0.0)) // ensure set never empty
         
         for i in 0..<size {
+            if i >= MAX_CHART_SIZE { break }
+            
             if data[i] != 0.0 || audioController.displayMode == .freqDomain {  // a hard 0 means no data
-                lineDataSet.addEntry(ChartDataEntry(x: Double(i), y: Double(data[i])))
+                let entry = audioController.displayMode == .timeDomain ? data[i] : (data[i]+128)/128
+                lineDataSet.addEntry(ChartDataEntry(x: Double(i), y: Double( entry )))
+                
+                //print("\(i): \(data[i])")
             }
         }
         
         let lineData = LineChartData()
         lineData.addDataSet(lineDataSet)
         lineChart.data = lineData
+        
+        lineDataSet.drawFilledEnabled = audioController.displayMode == .timeDomain ? false : true
         
         lineChart.notifyDataSetChanged()
     }
@@ -180,6 +188,10 @@ class ViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         audioController.muted = false
+        
+        if let touch = touches.first {
+            updateWaveForTouch(position: touch.location(in: self.view))
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -188,16 +200,17 @@ class ViewController: UIViewController {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            let position = touch.location(in: self.view)
-            
-            let frequency = position.x/UIScreen.main.bounds.width
-            let amplitude = 1-(position.y/UIScreen.main.bounds.height) // flip val so top is high, bottom low
-            
-            audioController.outputWave.frequency = Float32(frequency)
-            audioController.outputWave.amplitude = Float32(amplitude)
+            updateWaveForTouch(position: touch.location(in: self.view))
         }
     }
     
+    func updateWaveForTouch(position: CGPoint) {
+        let frequency = position.x/UIScreen.main.bounds.width
+        let amplitude = 1-(position.y/UIScreen.main.bounds.height) // flip val so top is high, bottom low
+        
+        audioController.outputWave.frequency = Float32(frequency)
+        audioController.outputWave.amplitude = Float32(amplitude)
+    }
     
     func testButtonTapped() {
         print("TEST BUTTON TAPPED")
@@ -208,15 +221,6 @@ class ViewController: UIViewController {
         //visualizer.isHidden = !visualizer.isHidden
         
     }
-
-    /*func moveNumLabel(_ recognizer: UIPanGestureRecognizer) {
-        let translation: CGPoint = recognizer.translation(in: view)
-        
-        let newX = recognizer.view!.center.x + translation.x
-        let newY = recognizer.view!.center.y + translation.y
-        
-        recognizer.view?.center = CGPoint(x: newX, y: newY)
-        recognizer.setTranslation(CGPoint(x: 0, y: 0), in: view)
-    }*/
+    
 }
 

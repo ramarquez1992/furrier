@@ -25,9 +25,9 @@ let kDefaultDrawSamples = 1024
 
 class BufferManager {
         
-    private(set) var drawBuffers: UnsafeMutablePointer<UnsafeMutablePointer<Float32>?>
-    var currentDrawBufferLength: Int
-    private var mDrawBufferIndex: Int
+    //private(set) var drawBuffers: UnsafeMutablePointer<UnsafeMutablePointer<Float32>?>
+    //var currentDrawBufferLength: Int
+    //private var mDrawBufferIndex: Int
     
     
     
@@ -49,11 +49,11 @@ class BufferManager {
     
     init(maxFramesPerSlice inMaxFramesPerSlice: Int) {
         //REMOVING THIS BLOCK BREAKS CHART
-        drawBuffers = UnsafeMutablePointer.allocate(capacity: Int(kNumDrawBuffers))
-        mDrawBufferIndex = 0
-        currentDrawBufferLength = kDefaultDrawSamples
+        //drawBuffers = UnsafeMutablePointer.allocate(capacity: Int(kNumDrawBuffers))
+        //mDrawBufferIndex = 0
+        //currentDrawBufferLength = kDefaultDrawSamples
         for i in 0..<kNumDrawBuffers {
-            drawBuffers[Int(i)] = UnsafeMutablePointer.allocate(capacity: Int(inMaxFramesPerSlice))
+            //drawBuffers[Int(i)] = UnsafeMutablePointer.allocate(capacity: Int(inMaxFramesPerSlice))
         }
         ////////////////
         
@@ -68,7 +68,7 @@ class BufferManager {
         needsNewFFTData = 0
     
         FFTInputBuffer = UnsafeMutablePointer.allocate(capacity: Int(inMaxFramesPerSlice))
-        fft = FFTransformer(inMaxFramesPerSlice)
+        fft = FFTransformer(maxFramesPerSlice: inMaxFramesPerSlice)
         OSAtomicIncrement32Barrier(&needsNewFFTData)
     }
     

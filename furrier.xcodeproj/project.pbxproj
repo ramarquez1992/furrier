@@ -21,6 +21,8 @@
 		E900190E1DEC1D830056DD7C /* FFTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E900190D1DEC1D830056DD7C /* FFTransformer.swift */; };
 		E96D7B401DEE6583009218E4 /* VisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96D7B3F1DEE6583009218E4 /* VisualizerView.swift */; };
 		E96D7B441DEE8C28009218E4 /* Wave.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96D7B431DEE8C28009218E4 /* Wave.swift */; };
+		E96D7B461DEEA1C4009218E4 /* CABitOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96D7B451DEEA1C4009218E4 /* CABitOperations.swift */; };
+		E96D7B481DEEA227009218E4 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96D7B471DEEA227009218E4 /* NumTypes+Conversion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +86,8 @@
 		E900190D1DEC1D830056DD7C /* FFTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FFTransformer.swift; sourceTree = "<group>"; };
 		E96D7B3F1DEE6583009218E4 /* VisualizerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizerView.swift; sourceTree = "<group>"; };
 		E96D7B431DEE8C28009218E4 /* Wave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wave.swift; sourceTree = "<group>"; };
+		E96D7B451DEEA1C4009218E4 /* CABitOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CABitOperations.swift; sourceTree = "<group>"; };
+		E96D7B471DEEA227009218E4 /* NumTypes+Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumTypes+Conversion.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +130,8 @@
 				E900190D1DEC1D830056DD7C /* FFTransformer.swift */,
 				E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */,
 				E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */,
+				E96D7B451DEEA1C4009218E4 /* CABitOperations.swift */,
+				E96D7B471DEEA227009218E4 /* NumTypes+Conversion.swift */,
 				E90018E31DEBB8390056DD7C /* Assets.xcassets */,
 				E90018E51DEBB8390056DD7C /* LaunchScreen.storyboard */,
 				E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */,
@@ -268,11 +274,13 @@
 			files = (
 				E96D7B401DEE6583009218E4 /* VisualizerView.swift in Sources */,
 				E90018F91DEBF15B0056DD7C /* DCRejectionFilter.swift in Sources */,
+				E96D7B481DEEA227009218E4 /* NumTypes+Conversion.swift in Sources */,
 				E90018DF1DEBB8390056DD7C /* ViewController.swift in Sources */,
 				E96D7B441DEE8C28009218E4 /* Wave.swift in Sources */,
 				E90018EF1DEBC23B0056DD7C /* AudioController.swift in Sources */,
 				E90018F31DEBC9E50056DD7C /* CAStreamBasicDescription.swift in Sources */,
 				E900190E1DEC1D830056DD7C /* FFTransformer.swift in Sources */,
+				E96D7B461DEEA1C4009218E4 /* CABitOperations.swift in Sources */,
 				E90018DD1DEBB8390056DD7C /* AppDelegate.swift in Sources */,
 				E90018F11DEBC7A50056DD7C /* BufferManager.swift in Sources */,
 			);
