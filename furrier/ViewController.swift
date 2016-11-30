@@ -25,6 +25,8 @@ class ViewController: UIViewController {
     private let lineChart: LineChartView
     private let visualizer: VisualizerView
     
+    private var outputWave = Wave()
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         // INIT LOCATIONS
         centerX = UIScreen.main.bounds.maxX / 2
@@ -34,6 +36,7 @@ class ViewController: UIViewController {
         visualizer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         visualizer.layer.zPosition = 100
         visualizer.isHidden = true
+        
         
         // CHART
         lineChart = LineChartView()
@@ -49,9 +52,15 @@ class ViewController: UIViewController {
         lineChart.drawGridBackgroundEnabled = false
         lineChart.legend.enabled = false
         lineChart.chartDescription?.enabled = false
+        lineChart.dragEnabled = false
+        lineChart.scaleXEnabled = false
+        lineChart.scaleYEnabled = false
+        lineChart.pinchZoomEnabled = false
+        lineChart.doubleTapToZoomEnabled = false
+        lineChart.isUserInteractionEnabled = false
 
 
-        var modeSwitchOffset = CGFloat(10)
+        let modeSwitchOffset = CGFloat(10)
         modeSwitch = UISwitch()
         modeSwitch.frame = CGRect(x: UIScreen.main.bounds.width-modeSwitch.frame.width-modeSwitchOffset, y: modeSwitchOffset, width: modeSwitch.frame.width, height: modeSwitch.frame.height)
         modeSwitch.setOn(false, animated: false)
@@ -71,6 +80,8 @@ class ViewController: UIViewController {
         testButton.backgroundColor = .green
         testButton.layer.cornerRadius = 5
         testButton.isEnabled = true
+        testButton.layer.zPosition = 101
+
         
         // SUPER CALL
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -85,7 +96,7 @@ class ViewController: UIViewController {
         self.view.addSubview(modeSwitch)
         
         self.view.addSubview(testButton)
-        testButton.addTarget(self, action: #selector(ViewController.startButtonPressed), for: UIControlEvents.touchUpInside)
+        testButton.addTarget(self, action: #selector(ViewController.testButtonTapped), for: UIControlEvents.touchUpInside)
         
         
         // MISC SETUP
@@ -124,8 +135,14 @@ class ViewController: UIViewController {
     
     func drawView() {
         let (drawBuffer, drawBufferSize) = audioController.getDrawBuffer()
+        
         if drawBufferSize > 0 {
-            drawChart(data: drawBuffer!, size: drawBufferSize)
+            if (visualizer.isHidden) {
+                drawChart(data: drawBuffer!, size: drawBufferSize)
+            } else {
+                visualizer.setData(data: drawBuffer!, size: drawBufferSize)
+                visualizer.setNeedsDisplay()
+            }
         }
         
     }
@@ -161,12 +178,38 @@ class ViewController: UIViewController {
         }
     }
     
-    func startButtonPressed() {
-        print("START BUTTON PRESSED")
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        audioController.muted = false
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        audioController.muted = true
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            let position = touch.location(in: self.view)
+            
+            let frequency = position.x/UIScreen.main.bounds.width
+            let amplitude = 1-(position.y/UIScreen.main.bounds.height) // flip val so top is high, bottom low
+            
+            audioController.outputWave.frequency = Float32(frequency)
+            audioController.outputWave.amplitude = Float32(amplitude)
+        }
+    }
+    
+    
+    func testButtonTapped() {
+        print("TEST BUTTON TAPPED")
         audioController.playButtonPressedSound()
+        
+        //modeSwitch.setOn(true, animated: true)
+        //modeStateChanged(modeSwitch)
+        //visualizer.isHidden = !visualizer.isHidden
+        
     }
 
-    func moveNumLabel(_ recognizer: UIPanGestureRecognizer) {
+    /*func moveNumLabel(_ recognizer: UIPanGestureRecognizer) {
         let translation: CGPoint = recognizer.translation(in: view)
         
         let newX = recognizer.view!.center.x + translation.x
@@ -174,6 +217,6 @@ class ViewController: UIViewController {
         
         recognizer.view?.center = CGPoint(x: newX, y: newY)
         recognizer.setTranslation(CGPoint(x: 0, y: 0), in: view)
-    }
+    }*/
 }
 

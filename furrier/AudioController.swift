@@ -21,6 +21,8 @@ class AudioController: AURenderCallbackDelegate {
     var displayMode = displayModeType.timeDomain
     
     var muted: Bool = true
+    var outputWave = Wave()
+    
     var rioUnit: AudioUnit? = nil
 
     var dcRejectionFilter: DCRejectionFilter!
@@ -168,10 +170,29 @@ class AudioController: AURenderCallbackDelegate {
             for i in 0..<ioPtr.count {
                 memset(ioPtr[i].mData, 0, Int(ioPtr[i].mDataByteSize))
             }
+        } else {
+            
+            let audioOut: UnsafeMutablePointer<Float32> = ioPtr[0].mData!.assumingMemoryBound(to: Float32.self)
+            let numFrames = Int(inNumberFrames)
+            
+            var neg: Float = 1.0
+            var ctr = 0
+            let maxCtr = 20 // represents freq somehow...
+            for i in 0..<numFrames {
+                let newOutVal = (outputWave.amplitude*0.3  *   neg   )
+                //print("orig: \(audioOut[i]) new: \(newOutVal)")
+                audioOut[i] = newOutVal
+                
+                ctr += 1
+                if ctr >= maxCtr {
+                    ctr = 0
+                    neg *= -1
+                }
+            }
+
         }
         
         return err;
-
     }
     
     ////////////////////////////////////////////////////////////////////////////
