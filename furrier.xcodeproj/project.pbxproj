@@ -23,6 +23,7 @@
 		E96D7B441DEE8C28009218E4 /* Wave.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96D7B431DEE8C28009218E4 /* Wave.swift */; };
 		E96D7B461DEEA1C4009218E4 /* CABitOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96D7B451DEEA1C4009218E4 /* CABitOperations.swift */; };
 		E96D7B481DEEA227009218E4 /* NumTypes+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96D7B471DEEA227009218E4 /* NumTypes+Conversion.swift */; };
+		E96D7B4A1DEF5233009218E4 /* tales_of_brave_ulysses.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E96D7B491DEF5233009218E4 /* tales_of_brave_ulysses.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		E96D7B431DEE8C28009218E4 /* Wave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wave.swift; sourceTree = "<group>"; };
 		E96D7B451DEEA1C4009218E4 /* CABitOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CABitOperations.swift; sourceTree = "<group>"; };
 		E96D7B471DEEA227009218E4 /* NumTypes+Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumTypes+Conversion.swift"; sourceTree = "<group>"; };
+		E96D7B491DEF5233009218E4 /* tales_of_brave_ulysses.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tales_of_brave_ulysses.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 		E90018F71DEBD3E50056DD7C /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				E96D7B491DEF5233009218E4 /* tales_of_brave_ulysses.mp3 */,
 				E90018F41DEBD3750056DD7C /* button_press.caf */,
 			);
 			name = audio;
@@ -262,6 +265,7 @@
 				E90018F51DEBD3750056DD7C /* button_press.caf in Resources */,
 				E90018E71DEBB8390056DD7C /* LaunchScreen.storyboard in Resources */,
 				E90018E41DEBB8390056DD7C /* Assets.xcassets in Resources */,
+				E96D7B4A1DEF5233009218E4 /* tales_of_brave_ulysses.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

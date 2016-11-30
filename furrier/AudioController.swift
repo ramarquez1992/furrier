@@ -176,6 +176,7 @@ class AudioController: AURenderCallbackDelegate {
             let numFrames = Int(inNumberFrames)
             
             createSinInplace(audioOut, numFrames: numFrames)
+            //createSqInplace(audioOut, numFrames: numFrames)
             
         }
         
@@ -194,7 +195,7 @@ class AudioController: AURenderCallbackDelegate {
     func createSqInplace(_ ioData: UnsafeMutablePointer<Float32>, numFrames: Int) {
         var neg: Float = 1.0
         var ctr = 0
-        let maxCtr = Int((outputWave.frequency*100)/2) //TODO: directly represent freq
+        let maxCtr = Int((outputWave.frequency*100)/2)*2 //TODO: directly represent freq
         //print("freq: \(outputWave.frequency) maxCtr: \(maxCtr)")
         
         for i in 0..<numFrames {
@@ -225,7 +226,8 @@ class AudioController: AURenderCallbackDelegate {
     }
     
     private func createButtonPressedSound() {
-        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "button_press", ofType: "caf")!)
+        //let url = URL(fileURLWithPath: Bundle.main.path(forResource: "button_press", ofType: "caf")!)
+        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "tales_of_brave_ulysses", ofType: "mp3")!)
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
         } catch {
