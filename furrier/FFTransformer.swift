@@ -43,8 +43,6 @@ class FFTransformer {
      
      */
     
-    
-    
     private var mSpectrumAnalysis: FFTSetup?
     private var mDspSplitComplex: DSPSplitComplex
     private var mFFTNormFactor: Float32

@@ -152,7 +152,7 @@ class AudioController: AURenderCallbackDelegate {
         err = AudioUnitRender(rioUnit!, ioActionFlags, inTimeStamp, 1, inNumberFrames, ioData)
         
         // filter out the DC component of the signal
-        //dcRejectionFilter?.processInplace(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: inNumberFrames)
+        dcRejectionFilter?.processInplace(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: inNumberFrames)
         
         if displayMode == .timeDomain {
             // time domain waveform
@@ -177,7 +177,9 @@ class AudioController: AURenderCallbackDelegate {
             
             var neg: Float = 1.0
             var ctr = 0
-            let maxCtr = 15 // represents freq somehow...
+            let maxCtr = Int((outputWave.frequency*100)/2) //TODO: directly represent freq
+            //print("freq: \(outputWave.frequency) maxCtr: \(maxCtr)")
+            
             for i in 0..<numFrames {
                 let newOutVal = (outputWave.amplitude*0.3  *   neg   )
                 //print("orig: \(audioOut[i]) new: \(newOutVal)")

@@ -158,6 +158,7 @@ class ViewController: UIViewController {
         
         for i in 0..<size {
             if i >= MAX_CHART_SIZE { break }
+            //if audioController.displayMode == .freqDomain && i > 400 { break }
             
             if data[i] != 0.0 || audioController.displayMode == .freqDomain {  // a hard 0 means no data
                 let entry = audioController.displayMode == .timeDomain ? data[i] : (data[i]+128)/128
@@ -205,7 +206,8 @@ class ViewController: UIViewController {
     }
     
     func updateWaveForTouch(position: CGPoint) {
-        let frequency = position.x/UIScreen.main.bounds.width
+        //let frequency = position.x/UIScreen.main.bounds.width
+        let frequency = 1-(position.x/UIScreen.main.bounds.width) // flip val so top is high, bottom low
         let amplitude = 1-(position.y/UIScreen.main.bounds.height) // flip val so top is high, bottom low
         
         audioController.outputWave.frequency = Float32(frequency)
@@ -213,7 +215,6 @@ class ViewController: UIViewController {
     }
     
     func testButtonTapped() {
-        print("TEST BUTTON TAPPED")
         audioController.playButtonPressedSound()
         
         //modeSwitch.setOn(true, animated: true)
