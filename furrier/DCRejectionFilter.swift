@@ -4,7 +4,6 @@
 //
 //  Translated by OOPer in cooperation with shlab.jp, on 2015/1/29.
 //
-//
 /*
  
  Copyright (C) 2016 Apple Inc. All Rights Reserved.

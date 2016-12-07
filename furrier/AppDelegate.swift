@@ -2,9 +2,6 @@
 //  AppDelegate.swift
 //  furrier
 //
-//  Created by Marquez, Richard A on 11/27/16.
-//  Copyright © 2016 WSU. All rights reserved.
-//
 
 import UIKit
 

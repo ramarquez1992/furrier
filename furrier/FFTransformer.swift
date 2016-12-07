@@ -2,9 +2,6 @@
 //  FFTransformer.swift
 //  furrier
 //
-//  Created by Marquez, Richard A on 11/28/16.
-//  Copyright © 2016 WSU. All rights reserved.
-//
 
 import Accelerate
 
@@ -28,21 +25,7 @@ class FFTransformer {
     
     
     
-    //  aurioTouch
-    //
-    //  Translated by OOPer in cooperation with shlab.jp, on 2015/1/30.
-    //
-    //
-    /*
-     
-     Copyright (C) 2016 Apple Inc. All Rights Reserved.
-     See LICENSE.txt for this sample’s licensing information
-     
-     Abstract:
-     This class demonstrates how to use the Accelerate framework to take Fast Fourier Transforms (FFT) of the audio data. FFTs are used to perform analysis on the captured audio data
-     
-     */
-    
+    //  From: aurioTouch
     private var mSpectrumAnalysis: FFTSetup?
     private var mDspSplitComplex: DSPSplitComplex
     private var mFFTNormFactor: Float32

@@ -1,22 +1,5 @@
-//
-//  BufferManager.swift
-//  aurioTouch
-//
-//  Translated by OOPer in cooperation with shlab.jp, on 2015/1/30.
-//
-//
-/*
- 
- Copyright (C) 2016 Apple Inc. All Rights Reserved.
- See LICENSE.txt for this sample’s licensing information
- 
- Abstract:
- This class handles buffering of audio data that is shared between the view and audio controller
- 
- */
-
 import AudioToolbox
-import libkern
+//import libkern
 
 class BufferManager {
     private(set) var drawBuffer: UnsafeMutablePointer<Float32>

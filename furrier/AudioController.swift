@@ -170,7 +170,6 @@ class AudioController: AURenderCallbackDelegate {
                 //muteInPlace(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: Int(inNumberFrames))
             }
         } else {
-            
             // audioOut is both input AND output param
             let audioOut: UnsafeMutablePointer<Float32> = ioPtr[0].mData!.assumingMemoryBound(to: Float32.self)
             let numFrames = Int(inNumberFrames)
