@@ -129,11 +129,7 @@
 				E96D7B431DEE8C28009218E4 /* Wave.swift */,
 				E90018F01DEBC7A50056DD7C /* BufferManager.swift */,
 				E96D7B3F1DEE6583009218E4 /* VisualizerView.swift */,
-				E900190D1DEC1D830056DD7C /* FFTransformer.swift */,
-				E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */,
-				E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */,
-				E96D7B451DEEA1C4009218E4 /* CABitOperations.swift */,
-				E96D7B471DEEA227009218E4 /* NumTypes+Conversion.swift */,
+				E96F1EB11DF7922600CB0964 /* Helpers */,
 				E90018E31DEBB8390056DD7C /* Assets.xcassets */,
 				E90018E51DEBB8390056DD7C /* LaunchScreen.storyboard */,
 				E90018FC1DEBF9B70056DD7C /* Charts.xcodeproj */,
@@ -168,6 +164,18 @@
 				E90019071DEBF9B80056DD7C /* ChartsTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E96F1EB11DF7922600CB0964 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E900190D1DEC1D830056DD7C /* FFTransformer.swift */,
+				E90018F81DEBF15B0056DD7C /* DCRejectionFilter.swift */,
+				E90018F21DEBC9E50056DD7C /* CAStreamBasicDescription.swift */,
+				E96D7B451DEEA1C4009218E4 /* CABitOperations.swift */,
+				E96D7B471DEEA227009218E4 /* NumTypes+Conversion.swift */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -4,9 +4,7 @@
 //
 //  Created by Marquez, Richard A on 11/27/16.
 //  
-//  Uses aruiTouch by Apple Inc.
-//  Swift translation by OOPer in cooperation with shlab.jp, on 2015/1/31.
-//
+//  Uses aruiTouch by Apple Inc.  (Swift translation by OOPer in cooperation with shlab.jp, on 2015/1/31.)
 
 import AVFoundation
 import AudioToolbox
@@ -107,7 +105,6 @@ class AudioController: AURenderCallbackDelegate {
         self.bufferManager = BufferManager(maxFramesPerSlice: Int(maxFramesPerSlice))
         self.FFTData = UnsafeMutablePointer.allocate(capacity: bufferManager.FFTOutputBufferLength)
         bzero(self.FFTData, size_t(bufferManager.FFTOutputBufferLength * MemoryLayout<Float32>.size))
-
         
         // Set the render callback on AURemoteIO
         var renderCallback = AURenderCallbackStruct(

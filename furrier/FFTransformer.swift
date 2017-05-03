@@ -6,24 +6,6 @@
 import Accelerate
 
 class FFTransformer {
-    /*var maxFrames: Int
-    var fftLength: Int { return maxFrames/2 }
-    
-    init(_ inMaxFrames: Int) {
-        self.maxFrames = inMaxFrames
-        print("maxFrames: \(maxFrames) ; fftLength: \(fftLength)")
-    }
- 
-    func compute(_ inAudioData: UnsafePointer<Float32>?, outFFTData: UnsafeMutablePointer<Float32>?) {
-        print("computing fft")
-    }*/
-    
-    
-    
-    
-    
-    
-    
     
     //  From: aurioTouch
     private var mSpectrumAnalysis: FFTSetup?

@@ -1,6 +1,8 @@
 import AudioToolbox
 //import libkern
 
+// built on top of aurioTouch
+
 class BufferManager {
     private(set) var drawBuffer: UnsafeMutablePointer<Float32>
     var maxFrames: Int { return FFTInputBufferLen }

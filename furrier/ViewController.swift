@@ -7,7 +7,7 @@ import UIKit
 import Charts
 
 class ViewController: UIViewController {
-    private let MAX_CHART_SIZE: Int = 512  // for speed
+    private let MAX_CHART_SIZE: Int = 256  // for speed
     private let REDRAW_INTERVAL: Double = 0.1
 
     private let audioController: AudioController = AudioController()
